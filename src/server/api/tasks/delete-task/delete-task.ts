@@ -3,7 +3,6 @@ import { prisma } from '../../../../../prisma/client';
 import { authorizedProcedure } from '../../trpc';
 import { TRPCError } from '@trpc/server';
 import { isPrismaError } from '../../../utils/prisma';
-import { resourceLimits } from 'worker_threads';
 
 const deleteTaskInput = z.object({
   taskId: z.string(),

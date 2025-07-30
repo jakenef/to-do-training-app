@@ -3,8 +3,6 @@ import { appRouter } from '../../api.routes';
 import { vi, describe, expect, it } from 'vitest';
 import { faker } from '@faker-js/faker';
 import { prisma, User } from '../../../../../prisma/client';
-import { error } from 'console';
-import { TaskScalarFieldEnum } from '../../../../../prisma/generated/internal/prismaNamespace';
 
 describe('Delete task', () => {
   let requestingUser: User;

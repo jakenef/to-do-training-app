@@ -1,3 +1,4 @@
+import { updateTask } from './tasks/update-task/update-task'
 import { deleteTask } from './tasks/delete-task/delete-task'
 import { createTask } from './tasks/create-task/create-task'
 import { setAccess } from './user-management/set-access/set-access'
@@ -11,6 +12,7 @@ export const appRouter = router({
   tasks: {
     createTask,
     deleteTask,
+    updateTask,
   },
   userManagement: {
     createUser,
