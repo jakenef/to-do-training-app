@@ -64,7 +64,7 @@ describe('Update task', () => {
     }
   });
 
-  it('updates completedAt if status is completed', async () => {
+  it('updates completedDate if status is completed', async () => {
     const oldTask = await prisma.task.create({
       data: {
         title: "dummyTitle",
@@ -72,7 +72,84 @@ describe('Update task', () => {
         ownerId: requestingUser.id,
       }
     });
-  })
+    try {
+      expect(oldTask).toHaveProperty('completedDate', null);
+      await updateTask({
+        taskId: oldTask.id,
+        newStatus: Status.Complete,
+      });
+      const newTask = await prisma.task.findUnique({
+        where: {
+          id: oldTask.id,
+        }
+      });
+      expect(newTask).toBeDefined();
+      expect(newTask?.completedDate).toBeInstanceOf(Date);
+    } finally {
+      await prisma.task.delete({
+        where: {
+          id: oldTask.id,
+        }
+      });
+    }
+  });
 
-  it('errors if requestingUser is not owner')
+  it('updates completedDate if status is changed from completed to anything else', async () => {
+    const oldTask = await prisma.task.create({
+      data: {
+        title: "dummyTitle",
+        description: "oldDescription",
+        ownerId: requestingUser.id,
+      }
+    });
+    const updatedTask = await prisma.task.update({
+        where: { id: oldTask.id },
+        data: { completedDate: new Date(), status: Status.Complete }
+      });
+    try {
+      expect(updatedTask.completedDate).not.toBeNull();
+      await updateTask({
+        taskId: updatedTask.id,
+        newStatus: Status.InProgress,
+      });
+      const newTask = await prisma.task.findUnique({
+        where: {
+          id: updatedTask.id,
+        }
+      });
+      expect(newTask).toBeDefined();
+      expect(newTask?.completedDate).toBeNull();
+    } finally {
+      await prisma.task.delete({
+        where: {
+          id: oldTask.id,
+        }
+      });
+    }
+  });
+
+  it('errors if requesting user is not the owner of task', async () => {
+    const otherUser = await prisma.user.create({
+      data: generateDummyUserData({
+        permissions: [],
+        roles: ['user'],
+      }),
+    });
+    const task = await prisma.task.create({
+      data: {
+        title: faker.company.name(),
+        ownerId: otherUser.id,
+      }
+    })
+    try {
+      await expect(updateTask({ taskId: task.id, newTitle: 'newTitle' })).rejects.toHaveProperty('code', 'NOT_FOUND');
+    } finally {
+      await prisma.task.delete({
+        where: {
+          id: task.id
+        }
+      });
+      await prisma.user.delete({ where: { id: otherUser.id } });
+    }
+  });
 });

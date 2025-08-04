@@ -16,7 +16,6 @@ export const createTask = authenticatedProcedure
   .input(createTaskInput)
   .output(createTaskOutput)
   .mutation(async (opts) => {
-    // Your logic goes here
     const task = await prisma.task.create({
       data: {
         title: opts.input.title,

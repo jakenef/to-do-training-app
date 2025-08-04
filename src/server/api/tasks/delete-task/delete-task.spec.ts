@@ -47,7 +47,6 @@ describe('Delete task', () => {
   });
 
   it('errors if requesting user is not the owner of task', async () => {
-    let err;
     const otherUser = await prisma.user.create({
       data: generateDummyUserData({
         permissions: [],
@@ -68,6 +67,7 @@ describe('Delete task', () => {
           id: task.id
         }
       })
+      await prisma.user.delete({ where: { id: otherUser.id } });
     }
   })
 });
