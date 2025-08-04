@@ -13,7 +13,7 @@ export class ByuLayout {
     title: { text: 'To-Do', path: '' },
     menu: [
       { text: 'Home', path: '' },
-      { text: 'My Tasks', path: '/lists' },
+      { text: 'My Tasks', path: '/lists'},
     ],
   };
 }
