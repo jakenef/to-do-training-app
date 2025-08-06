@@ -12,8 +12,8 @@ export const createTasks = makeDummy({
     if (!user) {
       throw new Error('User not found');
     }
-    const tasks: Prisma.TaskCreateManyInput[] = Array.from({ length: inputData.count }, () => ({
-      title: faker.book.title(),
+    const tasks: Prisma.TaskCreateManyInput[] = Array.from({ length: inputData.count }, (_, index) => ({
+      title: `${faker.book.title()} - ${index + 1}`,
       description: faker.lorem.sentences({ min: 0, max: 3 }),
       ownerId: user.id,
     }));
