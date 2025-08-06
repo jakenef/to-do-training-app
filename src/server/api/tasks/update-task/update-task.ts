@@ -12,7 +12,14 @@ const updateTaskInput = z.object({
 });
 
 const updateTaskOutput = z.object({
-  taskId: z.string(),
+  status: z.literal(Object.values(Status)),
+  id: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  title: z.string(),
+  description: z.string().nullable(),
+  completedDate: z.nullable(z.date()),
+  ownerId: z.string(),
 });
 
 export const updateTask = authenticatedProcedure
@@ -38,14 +45,13 @@ export const updateTask = authenticatedProcedure
     }
 
     try {
-      const task = await prisma.task.update({
+      return await prisma.task.update({
         where: {
           id: opts.input.taskId,
           ownerId: opts.ctx.userId,
         },
         data: updateData
       });
-      return { taskId: task.id }
     } catch (error) {
       if (isPrismaError(error, 'NOT_FOUND')) {
         throw new TRPCError({

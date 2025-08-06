@@ -19,10 +19,14 @@
 }
 
 <section class="task-list">
+  @if (showCreate()) {
+    <app-new-task-card (saveHandler)="taskCreated()" (cancelHandler)="showCreate.set(false)"></app-new-task-card>
+  }
   @for (task of taskResource.value()?.data; track task.id) {
-    <div>
-      <h2>{{ task.title }}</h2>
-      <p>{{ task.description }}</p>
-    </div>
+    <app-task-card [initialTaskValue]="task"></app-task-card>
   }
 </section>
+
+<button mat-fab [disabled]="showCreate()" (click)="showCreate.set(true)" aria-label="Create task button">
+  <mat-icon>add</mat-icon>
+</button>

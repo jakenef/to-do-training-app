@@ -3,10 +3,13 @@ import { TRPC_CLIENT } from '../../utils/trpc.client';
 import { trpcResource } from '@fhss-web-team/frontend-utils';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { NewTaskCardComponent } from './new-task-card/new-task-card.component';
+import { MatIconModule } from '@angular/material/icon';
+import { TaskCardComponent } from './task-card/task-card.component';
 
 @Component({
   selector: 'app-tasks',
-  imports: [MatProgressSpinnerModule, MatPaginator],
+  imports: [MatProgressSpinnerModule, MatPaginator, NewTaskCardComponent, MatIconModule, TaskCardComponent],
   templateUrl: './tasks.page.html',
   styleUrl: './tasks.page.scss'
 })
@@ -15,6 +18,7 @@ export class TasksPage {
 
   PAGE_SIZE = 12;
   pageOffset = signal(0);
+  showCreate = signal(false);
   
   taskResource = trpcResource(
     this.trpc.tasks.getTasksByUser.mutate,
@@ -24,6 +28,11 @@ export class TasksPage {
     }),
     { autoRefresh: true }
   )
+
+  async taskCreated() {
+    this.showCreate.set(false);
+    await this.taskResource.refresh();
+  }
 
   handlePageEvent(e: PageEvent) {
     this.pageOffset.set(e.pageIndex * e.pageSize);
