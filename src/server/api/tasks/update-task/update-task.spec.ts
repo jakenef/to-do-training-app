@@ -48,7 +48,7 @@ describe('Update task', () => {
       });
       const updatedTask = await prisma.task.findUnique({
         where: {
-          id: result.taskId,
+          id: result.id,
         }
       });
       expect(updatedTask).toBeDefined();
@@ -103,9 +103,9 @@ describe('Update task', () => {
       }
     });
     const updatedTask = await prisma.task.update({
-        where: { id: oldTask.id },
-        data: { completedDate: new Date(), status: Status.Complete }
-      });
+      where: { id: oldTask.id },
+      data: { completedDate: new Date(), status: Status.Complete }
+    });
     try {
       expect(updatedTask.completedDate).not.toBeNull();
       await updateTask({
@@ -152,4 +152,29 @@ describe('Update task', () => {
       await prisma.user.delete({ where: { id: otherUser.id } });
     }
   });
+
+  it('trims whitespace from title when updated', async () => {
+    const titleWithWhitespace = `  ${faker.book.title()}  `;
+    const oldTask = await prisma.task.create({
+      data: {
+        title: titleWithWhitespace,
+        description: "oldDescription",
+        ownerId: requestingUser.id,
+      }
+    });
+    try {
+      await updateTask({
+        taskId: oldTask.id,
+        newTitle: titleWithWhitespace,
+      });
+      const updatedTask = await prisma.task.findUnique({
+        where: { id: oldTask.id }
+      });
+      expect(updatedTask).toBeDefined();
+      expect(updatedTask).toHaveProperty('title', titleWithWhitespace.trim());
+      expect(updatedTask?.title).not.toContain('  ');
+    } finally {
+      await prisma.task.delete({ where: { id: oldTask.id } })
+    }
+  })
 });

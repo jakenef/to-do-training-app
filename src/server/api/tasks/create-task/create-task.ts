@@ -18,7 +18,7 @@ export const createTask = authenticatedProcedure
   .mutation(async (opts) => {
     const task = await prisma.task.create({
       data: {
-        title: opts.input.title,
+        title: opts.input.title.trim(),
         description: opts.input.description,
         ownerId: opts.ctx.userId,
       }

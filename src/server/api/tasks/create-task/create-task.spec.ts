@@ -42,4 +42,20 @@ describe('Create task', () => {
       await prisma.task.delete({ where: { id: taskId }})
     }
   })
+
+  it('trims whitespace from title when created', async () => {
+    const titleWithWhitespace = `  ${faker.book.title()}  `;
+    const description = faker.commerce.productDescription();
+    const { taskId } = await createTask({ title: titleWithWhitespace, description });
+    try {
+      const foundTask = await prisma.task.findUnique({ 
+        where: { id: taskId }
+      });
+      expect(foundTask).toBeDefined();
+      expect(foundTask).toHaveProperty('title', titleWithWhitespace.trim());
+      expect(foundTask?.title).not.toContain('  ');
+    } finally {
+      await prisma.task.delete({ where: { id: taskId }})
+    }
+  })
 });

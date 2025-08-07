@@ -28,7 +28,7 @@ export const updateTask = authenticatedProcedure
   .mutation(async (opts) => {
     const updateData: any = {};
     if (opts.input.newTitle !== undefined) {
-      updateData.title = opts.input.newTitle;
+      updateData.title = opts.input.newTitle.trim();
     }
     if (opts.input.newDescription !== undefined) {
       updateData.description = opts.input.newDescription;
@@ -45,13 +45,14 @@ export const updateTask = authenticatedProcedure
     }
 
     try {
-      return await prisma.task.update({
+      const updatedTask = await prisma.task.update({
         where: {
           id: opts.input.taskId,
           ownerId: opts.ctx.userId,
         },
         data: updateData
       });
+      return updatedTask;
     } catch (error) {
       if (isPrismaError(error, 'NOT_FOUND')) {
         throw new TRPCError({

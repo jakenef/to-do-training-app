@@ -1,6 +1,5 @@
-import { Component, inject, input, linkedSignal, output } from '@angular/core';
+import { Component, effect, inject, input, linkedSignal, output, signal } from '@angular/core';
 import { MatIconModule } from "@angular/material/icon";
-// import { StatusMenuComponent } from "../status-menu/status-menu.component";
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { trpcResource } from '@fhss-web-team/frontend-utils';
@@ -37,15 +36,26 @@ export class TaskCardComponent {
     taskId: this.initialTaskValue().id,
     // taskId: '-1', // test error responses
     newTitle: this.newTitle(),
-    newDescription: this.newDescription() ?? undefined,
+    newDescription: this.newDescription(),
     newStatus: this.newStatus(),
-  }), { valueComputation: () =>  this.initialTaskValue() });
+  }), { valueComputation: () => this.initialTaskValue() });
 
-  newTitle = linkedSignal(() => this.initialTaskValue().title);
-  newDescription = linkedSignal(() => this.initialTaskValue().description);
-  newStatus = linkedSignal(() => this.initialTaskValue().status);
+  newTitle = signal('');
+  newDescription = signal('');
+  newStatus = signal<TaskStatus>('Incomplete');
 
-  editMode = linkedSignal(() => !!this.taskCardState.error());
+  constructor() {
+    effect(() => {
+      const state = this.taskCardState.value()
+      if (state) {
+        this.newTitle.set(state.title)
+        this.newDescription.set(state.description ?? '')
+        this.newStatus.set(state.status)
+      }
+    })
+  }
+
+  editMode = linkedSignal<boolean>(() => !!this.taskCardState.error());
 
   update(updates: Partial<Task>) {
     this.taskCardState.value.update((prevTask) => {
