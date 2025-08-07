@@ -21,7 +21,7 @@ const getTasksByUserOutput = z.object({
     ownerId: z.string(),
     // this tells typescript that the string will exactly match one of the status options
     status: z.literal(Object.values(Status)),
-  })),
+  })).nullable(),
   totalCount: z.number(),
 });
 
@@ -35,10 +35,12 @@ export const getTasksByUser = authorizedProcedure
     });
 
     if (opts.input.pageOffset && opts.input.pageOffset >= totalCount) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: `Cannot paginate to item ${opts.input.pageOffset + 1}, as there are only ${totalCount} items`
-      })
+      // throw new TRPCError({
+      //   code: 'BAD_REQUEST',
+      //   message: `Cannot paginate to item ${opts.input.pageOffset + 1}, as there are only ${totalCount} items`
+      // })
+
+      return { data: null, totalCount }
     }
 
     const data = await prisma.task.findMany({

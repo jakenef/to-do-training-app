@@ -23,7 +23,7 @@
     <app-new-task-card (saveHandler)="taskCreated()" (cancelHandler)="showCreate.set(false)"></app-new-task-card>
   }
   @for (task of taskResource.value()?.data; track task.id) {
-    <app-task-card [initialTaskValue]="task"></app-task-card>
+    <app-task-card [initialTaskValue]="task" (deleteTaskEvent)="taskDeleted($event)"></app-task-card>
   }
 </section>
 

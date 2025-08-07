@@ -1,6 +1,7 @@
 import { RouterOutlet } from '@angular/router';
 import { Component } from '@angular/core';
 import { ByuHeaderComponent, HeaderConfig } from '@fhss-web-team/frontend-utils';
+import { Permission } from '../../../security';
 
 @Component({
   selector: 'app-byu-layout',
@@ -9,7 +10,7 @@ import { ByuHeaderComponent, HeaderConfig } from '@fhss-web-team/frontend-utils'
   styleUrl: './byu.layout.scss'
 })
 export class ByuLayout {
-  headerConfig: HeaderConfig = {
+  headerConfig: HeaderConfig<Permission> = {
     title: { text: 'To-Do', path: '' },
     menu: [
       { text: 'Home', path: '' },
