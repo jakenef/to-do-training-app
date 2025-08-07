@@ -35,11 +35,6 @@ export const getTasksByUser = authorizedProcedure
     });
 
     if (opts.input.pageOffset && opts.input.pageOffset >= totalCount) {
-      // throw new TRPCError({
-      //   code: 'BAD_REQUEST',
-      //   message: `Cannot paginate to item ${opts.input.pageOffset + 1}, as there are only ${totalCount} items`
-      // })
-
       return { data: null, totalCount }
     }
 

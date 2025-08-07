@@ -1,0 +1,17 @@
+.status-menu {
+  border: solid 2px black;
+  border-radius: 20px;
+  aspect-ratio: 1;
+  min-width: 20px;
+  margin: 0;
+  cursor: pointer;
+  &.incomplete {
+    background-color: red;
+  }
+  &.in-progress {
+    background-color: yellow;
+  }
+  &.complete {
+    background-color: green;
+  }
+}

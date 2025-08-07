@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { TRPC_CLIENT } from '../../../utils/trpc.client';
 import { TaskStatus } from '../../../enums/task-status';
+import { StatusMenuComponent } from "../status-menu/status-menu.component";
 
 type Task = { 
   status: TaskStatus;
@@ -22,7 +23,7 @@ type Task = {
 
 @Component({
   selector: 'app-task-card',
-  imports: [MatIconModule, MatCardModule, MatButtonModule, MatInputModule, MatFormField, FormsModule, DatePipe],
+  imports: [MatIconModule, MatCardModule, MatButtonModule, MatInputModule, MatFormField, FormsModule, DatePipe, StatusMenuComponent],
   templateUrl: './task-card.component.html',
   styleUrl: './task-card.component.scss'
 })

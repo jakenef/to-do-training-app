@@ -18,10 +18,6 @@ export class NewTaskCardComponent {
   cancelHandler = output();
   saveHandler = output();
 
-  constructor() {
-    console.log('created')
-  }
-
   newTitle = signal('');
   newDescription = signal('');
 

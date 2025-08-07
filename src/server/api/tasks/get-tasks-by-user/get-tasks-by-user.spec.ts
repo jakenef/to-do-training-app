@@ -41,7 +41,7 @@ describe('Get tasks by user', () => {
       const retrievedTasks = await getTasksByUser({ pageSize: page, pageOffset: 0 });
       
       expect(retrievedTasks).toHaveProperty('totalCount', total);
-      expect(retrievedTasks.data.length).toBe(page);
+      expect(retrievedTasks.data?.length).toBe(page);
     } finally {
       await prisma.task.deleteMany({
         where: {
@@ -53,7 +53,7 @@ describe('Get tasks by user', () => {
     }
   });
 
-  it('errors on bad pagination', async () => {
+  it('returns null data on bad pagination', async () => {
     const total = 5;
     const page = 3;
     const tasks = await prisma.task.createManyAndReturn({
@@ -63,18 +63,14 @@ describe('Get tasks by user', () => {
       ),
     });
 
-    let error;
     try {
-      await getTasksByUser({ pageSize: page, pageOffset: total });
-    } catch (err) {
-      error = err;
+      const retrievedTasks = await getTasksByUser({ pageSize: page, pageOffset: total });
+      expect(retrievedTasks.data).toBeNull();
     } finally {
       await prisma.task.deleteMany({
         where: { id: { in: tasks.map(task => task.id) } }
       });
     }
-
-    expect(error).toHaveProperty('code', 'BAD_REQUEST');
   })
 
   it('returns empty if empty database', async () => {

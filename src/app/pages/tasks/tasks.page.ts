@@ -44,9 +44,11 @@ export class TasksPage {
     await this.trpc.tasks.deleteTask.mutate({ taskId: taskId });
 
     const paginator = this.paginator();
-    const currentPageCount = (this.taskResource.value()?.totalCount ?? 0) - paginator.pageIndex * paginator.pageSize
+    const currentPageCount = (this.taskResource.value()?.totalCount ?? 0) - paginator.pageIndex * paginator.pageSize;
     if (this.pageOffset() != 0 && currentPageCount === 1) {
       this.paginator().previousPage();
+    } else {
+      this.taskResource.refresh();
     }
   }
 }
