@@ -1,0 +1,19 @@
+<mat-card appearance="outlined" class="stat-card" (click)="isShowingPercentage.set(!isShowingPercentage())">
+  @if(percentTaskResource.isLoading()){
+    <p>Loading...</p>
+  } @else if (percentTaskResource.error()) {
+    <p> there was an error! OH NO!!! </p>
+  } @else {
+    @if(isShowingPercentage()){
+      <mat-card-title>Percent of Completed Tasks</mat-card-title>
+      <mat-card-content class="big-stat-number" [ngClass]="percentClassName()">
+        {{ percentCompletedTasks() }}%
+      </mat-card-content>
+    } @else {
+      <mat-card-title>Number of Completed Tasks</mat-card-title>
+      <mat-card-content class="big-stat-number">
+        {{ numOfCompletedTasks() }}
+      </mat-card-content>
+    }
+  }
+</mat-card>
