@@ -26,7 +26,8 @@
   @else {
     <mat-card-header class="task-header">
       <mat-card-title>{{newTitle()}}</mat-card-title>
-      @if (taskCardState.value()?.completedDate) {
+      @if(taskCardState.value()?.completedDate){
+        <h4 class="completed-date"> Completed at: {{ taskCardState.value()?.completedDate | date:'medium' }} </h4>
       }
       <app-status-menu 
         class="status-selector"

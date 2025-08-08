@@ -42,7 +42,7 @@ export const getTasksByUser = authorizedProcedure
       where: { ownerId: opts.ctx.userId },
       take: opts.input.pageSize,
       skip: opts.input.pageOffset,
-      orderBy: { createdAt: 'desc'},
+      orderBy: { createdAt: 'desc' },
     });
 
     return { data, totalCount }

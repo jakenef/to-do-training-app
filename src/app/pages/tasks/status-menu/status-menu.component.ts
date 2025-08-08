@@ -4,10 +4,12 @@ import { Status } from '../../../../../prisma/generated/enums';
 import { trpcResource } from '@fhss-web-team/frontend-utils';
 import { Task } from '../../../../../prisma/client';
 import { updateTask } from '../../../../server/api/tasks/update-task/update-task';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu'
 
 @Component({
   selector: 'app-status-menu',
-  imports: [],
+  imports: [MatButtonModule, MatMenuModule],
   templateUrl: './status-menu.component.html',
   styleUrl: './status-menu.component.scss'
 })
