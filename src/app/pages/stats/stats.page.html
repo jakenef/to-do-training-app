@@ -1,6 +1,10 @@
 <content class="stats-page">
+  <button class="help-btn" (click)="helpToggled()">Help</button>
   <section class="stats-section">
     <app-num-of-tasks />
     <app-percent-complete-tasks />
   </section>
 </content>
+@if(isShowingHelp()){
+  <app-help-popup (closeClicked)="helpToggled()" />
+}
