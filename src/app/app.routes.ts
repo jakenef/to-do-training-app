@@ -11,6 +11,7 @@ import { TasksPage } from './pages/tasks/tasks.page';
 import { permissionGuard } from './utils/permission.guard';
 import { StatsPage } from './pages/stats/stats.page';
 import { TasksGridPage } from './pages/tasks-grid/tasks-grid.page';
+import { TasksAgainPage } from './pages/tasks-again/tasks-again.page';
 
 export const routes: Routes = [
   { path: 'server-error', component: ServerErrorPage },
@@ -22,7 +23,8 @@ export const routes: Routes = [
       { path: '', component: HomePage },
       { path: 'tasks', component: TasksPage, canActivate: [permissionGuard(['manage-tasks'])] },
       { path: 'stats', component: StatsPage, canActivate: [permissionGuard(['manage-tasks'])] },
-      { path: 'tasks-grid', component: TasksGridPage, canActivate: [permissionGuard(['manage-tasks'])]}
+      { path: 'tasks-grid', component: TasksGridPage, canActivate: [permissionGuard(['manage-tasks'])]},
+      { path: 'tasks-again', component: TasksAgainPage, canActivate: [permissionGuard(['manage-tasks'])]},
     ],
   },
   { path: '**', component: NotFoundPage },
