@@ -1,0 +1,15 @@
+<content class="tasks-grid-page">
+  @if(taskResource.isLoading()){
+    Loading...
+  } @else if(taskResource.error()){
+    Error!!!
+  } @else {
+    <table mat-table [dataSource]="taskResource.value()?.data || []">
+      <mat-text-column name="taskName" [headerText]="'Name'" [dataAccessor]="renderTaskName"></mat-text-column>
+      <mat-text-column name="taskDescription" [headerText]="'Description'" [dataAccessor]="renderTaskDescription"></mat-text-column>
+      <mat-text-column name="completedDate" [headerText]="'Completed Date'" [dataAccessor]="renderTaskCompletedDate"></mat-text-column>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+    </table>
+  }
+</content>

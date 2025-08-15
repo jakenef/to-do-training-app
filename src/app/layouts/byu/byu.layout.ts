@@ -16,6 +16,7 @@ export class ByuLayout {
       { text: 'Home', path: '' },
       { text: 'My Tasks', path: '/tasks' },
       { text: 'My Stats', path: '/stats' },
+      { text: 'Task Grid', path: '/tasks-grid'}
     ],
   };
 }

@@ -9,7 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './help-popup.component.scss'
 })
 export class HelpPopupComponent {
-  closeClicked = output()
+  closeClicked = output();
 
-
+  closeHelp(){
+    this.closeClicked.emit();
+  }
 }
