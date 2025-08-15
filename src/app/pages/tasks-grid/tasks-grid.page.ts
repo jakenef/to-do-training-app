@@ -28,7 +28,7 @@ export class TasksGridPage {
   pageOffset = signal(0);
   pageSize = 12;
 
-  columnsToDisplay = ['taskName', 'taskDescription', 'completedDate']
+  columnsToDisplay = ['taskTitle', 'taskDescription', 'completedDate']
 
   taskResource = trpcResource(this.trpc.tasks.getTasksByUser.mutate, () => ({
     pageOffset: this.pageOffset(),
